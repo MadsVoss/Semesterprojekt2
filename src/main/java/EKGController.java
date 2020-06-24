@@ -1,3 +1,4 @@
+/** @author {Mads Voss, Mikkel Bech, Dalia Pireh, Sali Azou, Beant Sandhu}*/
 import data.EKGDAO;
 import data.EKGDAOSQLImpl;
 import data.EKGDTO;
@@ -11,7 +12,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -23,9 +23,7 @@ public class EKGController implements EKGListener {
     private boolean record;
     private final EKGDAO ekgDAO = new EKGDAOSQLImpl();
 
-    final int WINDOW_SIZE = 149;
-
-
+    //This is where the magic happens. Here we draw our graph in the GUI. It adds data to our XYChart which is how we show it in the LineChart. We also make sure to get the cpr if we press record.
     @Override
     public void notifyEKG(LinkedList<EKGDTO> ekgData) {
         if (this.record) {
@@ -42,15 +40,12 @@ public class EKGController implements EKGListener {
                 for (int i = 0; i < ekgData.size(); i++) {
                     stringDoubleData.getData().add(new XYChart.Data<Double, Double>((double) i, ekgData.get(i).getEkg()));
                 }
-
-                if (stringDoubleData.getData().size() > WINDOW_SIZE)
-                    stringDoubleData.getData().remove(0);
             }
 
         });
 
     }
-
+    //This is what happens when we press the start button. We add the data from above to the lineChart and run it in a new Thread to not cause problems. We also remove the symbols to make it less cluttered.
     public void startEKG(ActionEvent actionEvent) throws InterruptedException {
         lineChart.getData().add(stringDoubleData);
         ProducerConsumer pc = new ProducerConsumer();
@@ -68,11 +63,13 @@ public class EKGController implements EKGListener {
 
 
     }
-
+    //Start recording.
     public void startRecordingEKG(ActionEvent actionEvent) {
         this.record = !this.record;
     }
 
+    //This is what happens if we press the "Load Data" button. We open a new window where you can type in a cpr and then retrieve data from the database.
+//We decided to make it in another window so you could run both at the same time.
     public void loadEKGPage(ActionEvent actionEvent) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/LoadGUI.fxml"));
         try {

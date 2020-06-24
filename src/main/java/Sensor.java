@@ -1,16 +1,14 @@
 /** @author {Mads Voss, Mikkel Bech, Dalia Pireh, Sali Azou, Beant Sandhu}*/
 import data.EKGDTO;
 import jssc.*;
-
 import java.sql.Timestamp;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Sensor {
     private SerialPort serialPort = null;
     private String result = null;
-    private int value = 0;
 
+    //Access the sensor (Arduino etc). We also set our parameters for baudRate and so on.
     public Sensor(int portnummer) {
         String[] portNames = SerialPortList.getPortNames();
         try {
@@ -24,6 +22,7 @@ public class Sensor {
             e.printStackTrace();
         }
     }
+    //We get the data from the sensor and catch any exceptions if necessary
     public LinkedList<EKGDTO> getData() {
         try {
             if (serialPort.getInputBufferBytesCount() > 0) {
@@ -65,18 +64,4 @@ public class Sensor {
         }
         return null;
     }
-
-/*
-    public static void main(String[] args) throws InterruptedException {
-        Sensor sensor = new Sensor(1);
-        while(true){
-            Thread.sleep(20);
-            int data = sensor.getData();
-            System.out.println(data);
-        }
-    }
-    */
 }
-
-
-

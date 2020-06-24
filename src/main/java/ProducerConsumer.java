@@ -3,7 +3,6 @@ import data.EKGDTO;
 import data.EKGListener;
 import data.EKGObservable;
 import java.util.LinkedList;
-import java.util.List;
 
 public class ProducerConsumer implements EKGObservable {
     Sensor sensor = new Sensor(0);
@@ -11,7 +10,6 @@ public class ProducerConsumer implements EKGObservable {
     LinkedList<EKGDTO> listDB = new LinkedList<>();
     int capacity = 1000;
     private EKGListener listenerGUI;
-    private EKGListener listenerDB;
 
     public void produce() throws InterruptedException {
         while (true) {
@@ -54,8 +52,8 @@ public class ProducerConsumer implements EKGObservable {
                 while (listDB.size() < 100)
                     wait();
                 consumeListDB = listDB;
-                if (listenerDB != null) {
-                    listenerDB.notifyEKG(consumeListDB);
+                if (listenerGUI != null) {
+                    listenerGUI.notifyEKG(consumeListDB);
                     System.out.println("consumer consume: " + consumeListDB);
                 }
                 listDB = new LinkedList<>();
@@ -67,10 +65,7 @@ public class ProducerConsumer implements EKGObservable {
         this.listenerGUI = listenerGUI;
     }
 
-    @Override
-    public void registerDB(EKGListener listenerDB) {
-        this.listenerDB = listenerDB;
-    }
+
 
     public void runThreads () {
         Thread t1 = new Thread(new Runnable() {

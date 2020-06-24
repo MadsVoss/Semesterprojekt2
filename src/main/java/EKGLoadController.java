@@ -1,23 +1,28 @@
 /** @author {Mads Voss, Mikkel Bech, Dalia Pireh, Sali Azou, Beant Sandhu}*/
 import data.*;
 import javafx.event.ActionEvent;
-import javafx.scene.control.TextArea;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
-
 import java.util.LinkedList;
-import java.util.List;
+
 public class EKGLoadController {
     public TextField cprField;
-    public TextArea ekgDataArea;
+    public XYChart.Series<Double, Double> stringDoubleData = new XYChart.Series<>();
+    public LineChart lineChart;
 
+    //This is where we add the data to the lineChart when we retrieve it from the database. Again we remove the symbols to cause less cluttering.
     public void LoadData(ActionEvent actionEvent) {
+        stringDoubleData.getData().clear();
+        lineChart.getData().add(stringDoubleData);
         EKGDAO ekgDAO = new EKGDAOSQLImpl();
         LinkedList<EKGDTO> ekgData = ekgDAO.loadEKG(cprField.getText());
-        String text = "";
-        for (EKGDTO data : ekgData) {
-            text += "CPR: " + data.getCpr() + ", data: " + String.format("%.1f", data.getEkg()) + " Time: " + data.getTimestamp() + "\r\n";
+        for (int i = 0; i < ekgData.size(); i++) {
+            stringDoubleData.getData().add(new XYChart.Data<Double, Double>((double) i, ekgData.get(i).getEkg()));
         }
-        ekgDataArea.setText(text);
+        lineChart.setCreateSymbols(false);
+
+
     }
 
 }

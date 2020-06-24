@@ -1,16 +1,12 @@
 /** @author {Mads Voss, Mikkel Bech, Dalia Pireh, Sali Azou, Beant Sandhu}*/
 package data;
 
-import sun.management.Sensor;
-
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class EKGDAOSQLImpl implements EKGDAO {
 
-
+    //The cpr, data, and timestamp gets saved on the database into the table ekgData in MySQL
     @Override
     public void saveEkg(LinkedList<EKGDTO> ekgdtobatch) {
         new Thread(new Runnable() {
@@ -33,14 +29,15 @@ public class EKGDAOSQLImpl implements EKGDAO {
         }).start();
 
     }
-
+    //Loads data from the database back into java, here it selects everything from the table ekgData where the cpr is equal to what you write in the GUI.
+//It has a limit of 150, this is because it would otherwise look cluttered. In reality it would have been nice to have the statement also select a given data and time to show some more specific data.
     @Override
     public LinkedList<EKGDTO> loadEKG(String id) {
         LinkedList<EKGDTO> data = new LinkedList<>();
         Connection connection = SQLConnector.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ekgData WHERE cpr = ? ");
-            preparedStatement.setString(1, "");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ekgData WHERE cpr = ? limit 150 ");
+            preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 EKGDTO ekgDTO = new EKGDTO();

@@ -9,7 +9,6 @@ public class EKGDTO {
     private Timestamp timestamp;
     private int id;
 
-
     public double getEkg() {
         return ekg;
     }

@@ -1,4 +1,3 @@
-/** @author {Mads Voss, Mikkel Bech, Dalia Pireh, Sali Azou, Beant Sandhu}*/
 import data.EKGDAO;
 import data.EKGDAOSQLImpl;
 import data.EKGDTO;

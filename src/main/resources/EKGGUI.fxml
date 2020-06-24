@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EKGController">
+    <children>
+        <Button layoutX="14.0" layoutY="365.0" mnemonicParsing="false" onAction="#startEKG" text="Start" />
+        <Button fx:id="startRecord" layoutX="55.0" layoutY="365.0" mnemonicParsing="false" onAction="#startRecordingEKG" text="Record" />
+        <Button layoutX="287.0" layoutY="365.0" mnemonicParsing="false" onAction="#loadEKGPage" text="Load data" />
+        <TextField fx:id="idField" layoutX="451.0" layoutY="2.0" />
+        <TextField fx:id="" layoutX="63.0" layoutY="2.0" prefHeight="38.0" prefWidth="62.0" text="BPM:" />
+        <TextArea fx:id="BPM" layoutX="125.0" layoutY="2.0" prefHeight="2.0" prefWidth="42.0" />
+        <LineChart fx:id="lineChart" prefHeight="340.0" prefWidth="600.0" title="EKG" AnchorPane.rightAnchor="0.0">
+            <xAxis>
+                <CategoryAxis fx:id="Time" endMargin="60.0" label="Time in seconds" prefHeight="19.0" prefWidth="524.0" startMargin="0.0" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis fx:id="EKG" lowerBound="35.0" prefHeight="155.0" prefWidth="46.0" side="LEFT" upperBound="45.0" />
+            </yAxis>
+        </LineChart>
+    </children>
+</AnchorPane>
+        <!--@author {Mads Voss, Mikkel Bech, Dalia Pireh, Sali Azou, Beant Sandhu} -->
